@@ -48,7 +48,7 @@ export default function useStateContext() {
 
 export function ContextProvider({ children }) {
     const [context, setContext] = useState(null);
-
+    
     useEffect(() => {
         if (typeof window !== "undefined") {
             const storedContext = localStorage.getItem("context");

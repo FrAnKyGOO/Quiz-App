@@ -2,29 +2,33 @@
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import { createContext, useState, useMemo, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 // Create Theme Context
 const ThemeContext = createContext();
 
 export function ThemeProviderWrapper({ children }) {
-    const [darkMode, setDarkMode] = useState(false);
+    const [mode, setMode] = useState("light");
 
-    // Define Light and Dark Themes
-    const theme = useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode: darkMode ? "dark" : "light",
-                },
-            }),
-        [darkMode]
-    );
+    useEffect(() => {
+        const savedMode = localStorage.getItem("theme") || "light";
+        setMode(savedMode);
+    }, []);
 
-    const toggleDarkMode = () => setDarkMode((prevMode) => !prevMode);
+    const toggleTheme = () => {
+        const newMode = mode === "light" ? "dark" : "light";
+        setMode(newMode);
+        localStorage.setItem("theme", newMode);
+    };
+
+    const theme = createTheme({
+        palette: {
+            mode,
+        },
+    });
 
     return (
-        <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>
+        <ThemeContext.Provider value={{ mode, toggleTheme }}>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 {children}
@@ -33,7 +37,4 @@ export function ThemeProviderWrapper({ children }) {
     );
 }
 
-// Custom hook for using theme context
-export function useThemeContext() {
-    return useContext(ThemeContext);
-}
+export const useTheme = () => useContext(ThemeContext);

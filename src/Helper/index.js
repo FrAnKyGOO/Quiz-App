@@ -1,4 +1,5 @@
 export const getFormatedTime = (sec) => {
+    // console.log(sec);
     return (
         Math.floor(sec / 60)
             .toString()

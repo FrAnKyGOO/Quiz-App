@@ -1,6 +1,6 @@
 import { ThemeProviderWrapper } from "@/contexts/ThemeContext";
 import { ContextProvider } from "@/hooks/useStateContext";
-
+import Layout from "@/components/layout";
 
 export const metadata = {
     title: "Create Next App",
@@ -12,7 +12,9 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body>
                 <ContextProvider>
-                    <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+                    <ThemeProviderWrapper>
+                        <Layout>{children}</Layout>
+                    </ThemeProviderWrapper>
                 </ContextProvider>
             </body>
         </html>

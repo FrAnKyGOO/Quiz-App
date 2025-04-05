@@ -6,8 +6,6 @@ import Center from "./Center.js";
 import useForm from "@/hooks/useForm.js";
 import { createAPIEndpoint, ENDPOINTS } from "@/apis/index.js";
 import useStateContext from "@/hooks/useStateContext.js";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 const getFreshModel = () => ({
@@ -34,13 +32,13 @@ export default function Login() {
             createAPIEndpoint(ENDPOINTS.participant)
                 .post(values)
                 .then((res) => {
-                    console.log(res);
+                    const participantId = res.data.participantId;
 
-                    setContext({ participantId: res.data.participantId });
+                    // อัปเดต context
+                    setContext({ participantId });
 
-                    console.log(context);
-
-                    // router.push("/Quiz");
+                    // ไปหน้า Quiz หลังจาก login สำเร็จ
+                    router.push("/Quiz");
                 })
                 .catch((err) => console.log(err));
         }
@@ -87,7 +85,12 @@ export default function Login() {
                                 {...(errors.name && { error: true, helperText: errors.name })}
                             />
 
-                            <Button type="submit" variant="contained" size="large" sx={{ width: "90%", mt: 2 }}>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                size="large"
+                                sx={{ width: "90%", mt: 2 }}
+                            >
                                 Start
                             </Button>
                         </form>
