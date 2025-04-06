@@ -36,7 +36,7 @@ export default function Login() {
 
                     // อัปเดต context
                     setContext({ participantId });
-
+                    localStorage.setItem("participantId", res.data.participantId);
                     // ไปหน้า Quiz หลังจาก login สำเร็จ
                     router.push("/Quiz");
                 })

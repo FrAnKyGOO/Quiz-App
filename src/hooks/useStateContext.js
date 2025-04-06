@@ -47,32 +47,35 @@ export default function useStateContext() {
 }
 
 export function ContextProvider({ children }) {
-    const [context, setContext] = useState(null);
-    
+    const [context, setContext] = useState({
+        participantId: 0,
+        timeTaken: 0,
+        selectedOptions: [],
+    });
+
+    const [isReady, setIsReady] = useState(false);
+
     useEffect(() => {
         if (typeof window !== "undefined") {
             const storedContext = localStorage.getItem("context");
-            
-            // ✅ เช็คว่าค่าใน localStorage เป็น null หรือไม่
+
             try {
-                setContext(storedContext ? JSON.parse(storedContext) : { 
-                    participantId: 0, 
-                    timeTaken: 0, 
-                    selectedOptions: [] 
-                });
+                const parsed = storedContext ? JSON.parse(storedContext) : null;
+                if (parsed) {
+                    setContext(parsed);
+                }
             } catch (error) {
                 console.error("Error parsing JSON from localStorage:", error);
-                localStorage.removeItem("context"); // ล้างค่าเสีย
-                setContext({ participantId: 0, timeTaken: 0, selectedOptions: [] });
+                localStorage.removeItem("context");
             }
+
+            setIsReady(true); // ✅ context โหลดเสร็จแล้ว
         }
     }, []);
 
-    if (context === null) return <div>Loading...</div>;
+    if (!isReady) return <div>Loading...</div>; // แสดง loading แค่ตอน context ยังไม่พร้อม
 
     return (
-        <stateContext.Provider value={{ context, setContext }}>
-            {children}
-        </stateContext.Provider>
+        <stateContext.Provider value={{ context, setContext }}>{children}</stateContext.Provider>
     );
 }
