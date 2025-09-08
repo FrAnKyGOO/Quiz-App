@@ -16,7 +16,7 @@ export function ThemeProviderWrapper({ children }) {
     }, []);
 
     const toggleTheme = () => {
-        const newMode = mode === "light" ? "darkddf" : "light";
+        const newMode = mode === "light" ? "dark" : "light";
         setMode(newMode);
         localStorage.setItem("theme", newMode);
     };
