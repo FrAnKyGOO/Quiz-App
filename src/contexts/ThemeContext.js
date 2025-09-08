@@ -19,6 +19,7 @@ export function ThemeProviderWrapper({ children }) {
         const newMode = mode === "light" ? "dark" : "light";
         setMode(newMode);
         localStorage.setItem("theme", newMode);
+        console.log(`Theme changed to: ${newMode}`);
     };
 
     const theme = createTheme({
